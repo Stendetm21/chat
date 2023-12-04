@@ -34,7 +34,6 @@ function App() {
   const handleImageUpload = async (event) => {
     event.preventDefault();
   
-    // Проверяем, есть ли файлы
     if (event.target.files && event.target.files.length > 0) {
       const formData = new FormData();
       formData.append("image", event.target.files[0]);
@@ -53,7 +52,7 @@ function App() {
         if (response.data.success) {
           console.log(
             "Image uploaded successfully. Image URL:",
-            response.data
+            response.data.imageUrl
           );
           setUploadedImageUrl(response.data.imageUrl);
         } else {
@@ -65,7 +64,7 @@ function App() {
     } else {
       console.error("No files selected.");
     }
-  };
+  };  
   
   const handleSaveNickname = async () => {
     const nickname = inpuNickRef.current.value.trim();
@@ -118,20 +117,22 @@ function App() {
     if (messagesRef.current && value && typeof value === "string") {
       const blockMessageDiv = document.createElement("div");
       blockMessageDiv.classList.add("block-message");
-
+  
       const nickDiv = document.createElement("div");
       nickDiv.textContent = nickname + ":";
-
       if (nickname === undefined) {
         nickDiv.textContent = "";
       }
-
       nickDiv.classList.add("nick");
       blockMessageDiv.appendChild(nickDiv);
-
+  
       const messageDiv = document.createElement("div");
       messageDiv.className = "message";
-      blockMessageDiv.className = className;
+  
+      const textDiv = document.createElement("div");
+      textDiv.className = "text"; // Добавляем класс text
+      textDiv.textContent = value;
+  
       const timeDiv = document.createElement("div");
       timeDiv.className = "message-time";
       const currentTime = new Date();
@@ -139,12 +140,13 @@ function App() {
       const minutes = currentTime.getMinutes().toString().padStart(2, "0");
       const seconds = currentTime.getSeconds().toString().padStart(2, "0");
       timeDiv.textContent = `${hours}:${minutes}:${seconds}`;
-
-      messageDiv.textContent = value;
+  
+      messageDiv.appendChild(textDiv);
       messageDiv.appendChild(timeDiv);
-
+  
       blockMessageDiv.appendChild(messageDiv);
-
+  
+      blockMessageDiv.classList.add(className); // Добавляем класс к blockMessageDiv
       messagesRef.current.appendChild(blockMessageDiv);
       messagesRef.current.scrollTo({
         top: messagesRef.current.scrollHeight,
@@ -153,10 +155,10 @@ function App() {
     }
     setIsChatFlashing(true);
     setTimeout(() => {
-      // Удалим класс flash через 1.5 секунды (длительность анимации + запас)
       setIsChatFlashing(false);
     }, 1500);
   };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -348,22 +350,21 @@ function App() {
               }
               onKeyDown={handleKeyDown}
             />
+            <label htmlFor="imageInput" className="custom-file-upload">
+              <input
+                type="file"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </label>
+
             <button className="btn-send" type="submit">
               Send
             </button>
           </form>
           {/* Форма для загрузки изображений */}
-          <form encType="multipart/form-data" className="form-image-upload">
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-            <button type="button" onClick={handleImageUpload}>
-              Upload Image
-            </button>
-          </form>
           {uploadedImageUrl && (
             <div className="uploaded-image-container">
               <img

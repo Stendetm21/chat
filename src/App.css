@@ -151,7 +151,7 @@
       padding-right: 10px;
       color: #dcdcdc;
       font-weight: bold;
-
+      align-items: end;
     }
 
     .chat-window {
@@ -219,7 +219,6 @@
       display: flex;
       width: fit-content;
       height: 100%;
-      flex-direction: column;
       align-self: flex-end;
     }
 
@@ -239,7 +238,7 @@
       margin: 5px;
       max-width: 80%;
       font-size: 25px;
-      background-color: #1e9f55;;
+      background-color: #1e9f55 !important;
       padding: 10px;
       border-radius: 10px;
       color: #11151b
@@ -247,9 +246,9 @@
 
     .message-time {
       display: flex;
-      align-items: flex-end;
       font-size: 12px;
-      align-self: end;
+      padding-left: 10px;
+      align-items: end;
     }
 
     .block-message {
@@ -258,7 +257,6 @@
       align-self: flex-end;
       padding: 10px;
       font-size: 25px;
-      padding: 15px;
       background-color: #3498db;
       border-radius: 10px;
       max-width: 700px;
@@ -272,7 +270,6 @@
       max-width: 90%;
       padding: 10px;
       font-size: 25px;
-      padding: 15px;
       border: 1px solid #69696a;
       border-radius: 10px;
       color: rgb(164, 18, 162)
@@ -287,7 +284,30 @@
       height: 200px;
       border-radius: 10px;
       border: 1px solid #69696a;
+      object-fit: cover; /* Сохраняет соотношение сторон изображения и заполняет всю доступную область */
+
+      
     }
+    .custom-file-upload {
+      display: flex;
+      width: 50px;
+      background-image: url('../public/6583130.png');
+      border: 1px solid #3498db;
+      border-radius: 10px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .custom-file-upload:hover {
+      background-color: #2980b9;
+    }
+    
+    /* Скрыть оригинальный input[type="file"] */
+    .custom-file-upload input {
+      display: none;
+    }
+    
     @media screen and (max-width: 1024px) {
       .App-header {
         min-height: 100vh;
