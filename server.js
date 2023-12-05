@@ -15,6 +15,14 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 let counter = 0;
 const activeUsers = [];
+const updateOnlineUsers = () => {
+  const message = {
+    type: "getOnlineUsers",
+    online: counter,
+  };
+
+  broadcast(message);
+};
 // Загрузка изображения
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://13.53.182.168:3000");
@@ -25,20 +33,28 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/upload", upload.single("image"), handleUpload);
+app.post('/upload', upload.single('image'), async (req, res) => {
+  try {
+    const imageUrl = await handleUpload(req.file);
+    updateOnlineUsers();
+    // Отправка сообщения всем подключенным клиентам через WebSocket
+    broadcast({
+      type: 'imageUploaded',
+      imageUrl: imageUrl,
+    });
+
+    // Возвращение URL загруженного изображения в ответе
+    res.status(200).json({ success: true, imageUrl });
+  } catch (error) {
+    console.error('Error handling upload request:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 function generateClientId() {
   return Math.random().toString(36).substr(2, 9);
 }
 
-const updateOnlineUsers = () => {
-  const message = {
-    type: "getOnlineUsers",
-    online: counter,
-  };
-
-  broadcast(message);
-};
 
 const broadcast = (message) => {
   wss.clients.forEach((client) => {

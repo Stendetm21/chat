@@ -33,11 +33,11 @@ function App() {
 
   const handleImageUpload = async (event) => {
     event.preventDefault();
-  
+
     if (event.target.files && event.target.files.length > 0) {
       const formData = new FormData();
       formData.append("image", event.target.files[0]);
-  
+
       try {
         const response = await axios.post(
           "http://13.53.182.168:5023/upload",
@@ -48,13 +48,14 @@ function App() {
             },
           }
         );
-  
+
         if (response.data.success) {
           console.log(
             "Image uploaded successfully. Image URL:",
             response.data.imageUrl
           );
           setUploadedImageUrl(response.data.imageUrl);
+          getOnlineUsers();
         } else {
           console.error("Image upload failed:", response.data.error);
         }
@@ -64,8 +65,8 @@ function App() {
     } else {
       console.error("No files selected.");
     }
-  };  
-  
+  };
+
   const handleSaveNickname = async () => {
     const nickname = inpuNickRef.current.value.trim();
     const password = inputPasswordRef.current.value.trim();
@@ -116,8 +117,7 @@ function App() {
   const printMessage = (value, className, nickname) => {
     if (messagesRef.current && value && typeof value === "string") {
       const blockMessageDiv = document.createElement("div");
-      blockMessageDiv.classList.add("block-message");
-  
+
       const nickDiv = document.createElement("div");
       nickDiv.textContent = nickname + ":";
       if (nickname === undefined) {
@@ -125,14 +125,14 @@ function App() {
       }
       nickDiv.classList.add("nick");
       blockMessageDiv.appendChild(nickDiv);
-  
+
       const messageDiv = document.createElement("div");
       messageDiv.className = "message";
-  
+
       const textDiv = document.createElement("div");
       textDiv.className = "text"; // Добавляем класс text
       textDiv.textContent = value;
-  
+
       const timeDiv = document.createElement("div");
       timeDiv.className = "message-time";
       const currentTime = new Date();
@@ -140,25 +140,25 @@ function App() {
       const minutes = currentTime.getMinutes().toString().padStart(2, "0");
       const seconds = currentTime.getSeconds().toString().padStart(2, "0");
       timeDiv.textContent = `${hours}:${minutes}:${seconds}`;
-  
+
       messageDiv.appendChild(textDiv);
       messageDiv.appendChild(timeDiv);
-  
+
       blockMessageDiv.appendChild(messageDiv);
-  
+
       blockMessageDiv.classList.add(className); // Добавляем класс к blockMessageDiv
       messagesRef.current.appendChild(blockMessageDiv);
       messagesRef.current.scrollTo({
         top: messagesRef.current.scrollHeight,
         behavior: "smooth",
       });
+
+      setIsChatFlashing(true);
+      setTimeout(() => {
+        setIsChatFlashing(false);
+      }, 1500);
     }
-    setIsChatFlashing(true);
-    setTimeout(() => {
-      setIsChatFlashing(false);
-    }, 1500);
   };
-  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -222,13 +222,11 @@ function App() {
     };
     updateCurrentTime();
     const intervalId = setInterval(updateCurrentTime, 1000);
-
     const handleOpen = () => {
       setStatus("online...");
       getOnlineUsers();
       statusRef.current.className = "status";
     };
-
     const handleClose = () => {
       setStatus("disconnected...");
       statusRef.current.className = "disconnected-style";
@@ -266,13 +264,13 @@ function App() {
             parsedResponse.nickname
           );
         } else if (messageType === "privateMessage") {
-          // Обработка приватных сообщений от сервера
-          console.log("Received private message:", parsedResponse);
           printMessage(
             parsedResponse.data,
             "block-message-private",
             parsedResponse.nickname
           );
+        } else if (messageType === "imageUploaded") {
+          handleImageMessage(parsedResponse);
         }
         if (parsedResponse.type === "getOnlineUsers") {
           setOnlineUsers(parsedResponse.online);
@@ -281,7 +279,35 @@ function App() {
         console.error("Ошибка при разборе JSON:", error);
       }
     };
-
+    const handleImageMessage = (message) => {
+      const { imageUrl, nickname, time } = message;
+  
+      // Создаем элемент img и устанавливаем атрибут src
+      const imageElement = document.createElement("img");
+      imageElement.classList.add("image");
+      imageElement.src = imageUrl;
+  
+      // Создаем div и вставляем в него элемент img
+      const imageContainer = document.createElement("div");
+      imageContainer.classList.add("uploaded-image-container");
+      imageContainer.appendChild(imageElement);
+  
+      // Добавляем никнейм и время
+      const infoDiv = document.createElement("div");
+      infoDiv.classList.add("image-info");
+      infoDiv.textContent = `${nickname} - ${time}`;
+      imageContainer.appendChild(infoDiv);
+  
+      // Добавляем созданный контейнер в messagesRef
+      messagesRef.current.appendChild(imageContainer);
+  
+      // Прокручиваем вниз
+      messagesRef.current.scrollTo({
+          top: messagesRef.current.scrollHeight,
+          behavior: "smooth",
+      });
+  };
+  
     ws.onopen = handleOpen;
     ws.onclose = handleClose;
     ws.onmessage = (response) => {
@@ -335,45 +361,36 @@ function App() {
         </div>
         <div className="chat-block">
           <div id="messages" ref={messagesRef}></div>
-
           <form onSubmit={handleSubmit} className="form-message">
-            <input
-              id="input"
-              ref={inputRef}
-              placeholder="Enter message..."
-              value={messageInputs[clientId] || ""}
-              onChange={(e) =>
-                setMessageInputs((prevInputs) => ({
-                  ...prevInputs,
-                  [clientId]: e.target.value,
-                }))
-              }
-              onKeyDown={handleKeyDown}
-            />
-            <label htmlFor="imageInput" className="custom-file-upload">
+            <div className="input-container">
               <input
-                type="file"
-                id="imageInput"
-                name="image"
-                accept="image/*"
-                onChange={handleImageUpload}
+                id="input"
+                ref={inputRef}
+                placeholder="Enter message..."
+                value={messageInputs[clientId] || ""}
+                onChange={(e) =>
+                  setMessageInputs((prevInputs) => ({
+                    ...prevInputs,
+                    [clientId]: e.target.value,
+                  }))
+                }
+                onKeyDown={handleKeyDown}
               />
-            </label>
+              <label htmlFor="imageInput" className="custom-file-upload">
+                <input
+                  type="file"
+                  id="imageInput"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+              </label>
+            </div>
 
             <button className="btn-send" type="submit">
               Send
             </button>
           </form>
-          {/* Форма для загрузки изображений */}
-          {uploadedImageUrl && (
-            <div className="uploaded-image-container">
-              <img
-                className="uploaded-image"
-                src={uploadedImageUrl}
-                alt="Uploaded"
-              />
-            </div>
-          )}
         </div>
       </div>
     </header>

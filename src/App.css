@@ -1,418 +1,443 @@
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  font-family: sans-serif;
+  font-size: calc(10px + 2vmin);
+  flex-direction: column;
+  background-color: #11151b;
+  gap: 10px;
+  color: #dcdcdc;
+}
+
+.nickName {
+  font-size: 20px;
+  color: #dcdcdc;
+  gap: 10px;
+  width: 250px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.btn-nick {
+  display: flex;
+  padding-top: 5px;
+  width: 100px;
+  height: 40px;
+  align-self: flex-end;
+  justify-content: center;
+  font-size: 20px;
+  color: #dcdcdc;
+  border: 1px solid #3498db;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #11151b;
+  transition: border 0.3s;
+  /* Добавляем плавный переход для рамки */
+
+}
+
+.btn-nick:hover {
+  border: 1px solid #69696a;
+
+  /* Изменяем рамку при наведении курсора */
+}
 
 
-    .App-header {
-      min-height: 100vh;
-      display: flex;
-      font-family: sans-serif;
-      font-size: calc(10px + 2vmin);
-      flex-direction: column;
-      background-color: #11151b;
-      gap: 10px;
-      color: #dcdcdc;
-    }
+#inputNick {
+  width: 100%;
+  outline: none;
+  padding: 5px;
+  border: 1px solid #3498db;
+  /* Обводка инпута в цвет фона */
+  border-radius: 10px;
+  height: 30px;
+  background-color: #11151b;
+  color: #ffffff;
+  cursor: pointer;
+  transition: border 0.3s;
+}
 
-    .nickName {
-      font-size: 20px;
-      color: #dcdcdc;
-      gap: 10px;
-      width: 250px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      margin: 15px;
-    }
+#inputNick:hover {
+  border: 1px solid #69696a;
+}
 
-    .btn-nick {
-      display: flex;
-      padding-top: 5px;
-      width: 100px;
-      height: 40px;
-      align-self: flex-end;
-      justify-content: center;
-      font-size: 20px;
-      color: #dcdcdc;
-      border: 1px solid #3498db;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: #11151b;
-      transition: border 0.3s;
-      /* Добавляем плавный переход для рамки */
+#inputNick:focus {
+  outline: none;
+  /* Убираем стандартный контур в фокусе */
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.8);
+  /* Тень при фокусе (цвет синий) */
+}
 
-    }
+.form-message {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-top: 20px;
 
-    .btn-nick:hover {
-      border: 1px solid #69696a;
+}
 
-      /* Изменяем рамку при наведении курсора */
-    }
+.btn-send {
+  width: 100px;
+  color: #dcdcdc;
+  background-color: #11151b;
+  border: 1px solid #3498db;
+  /* Обводка инпута в цвет фона */
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: border 0.3s;
+  /* Добавляем плавный переход для рамки */
 
+}
 
-    #inputNick {
-      width: 100%;
-      outline: none;
-      padding: 5px;
-      border: 1px solid #3498db; /* Обводка инпута в цвет фона */
-      border-radius: 10px;
-      height: 30px;
-      background-color: #11151b;
-      color: #ffffff;
-      cursor: pointer;
-      transition: border 0.3s;
-    }
+.btn-send:hover {
+  border: 1px solid #a6a6a6;
+  /* Изменяем рамку при наведении курсора */
+}
 
-    #inputNick:hover {
-      border: 1px solid #69696a;
-    }
+.chat-block {
+  width: 100%;
+}
 
-    #inputNick:focus {
-      outline: none; /* Убираем стандартный контур в фокусе */
-      box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); /* Тень при фокусе (цвет синий) */
-    }
-    .form-message {
-      display: flex;
-      width: 100%;
-      flex-direction: row;
-      margin-bottom: 20px;
-      margin-top: 20px;
+#input {
+  width: 100%;
+  padding: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  box-sizing: border-box;
+  font-size: 35px;
+  height: 50px;
+  color: #dcdcdc;
+  cursor: pointer;
+  outline: none;
+  background-color: #11151b;
+  color: #ffffff;
+  border: none;
+}
 
-    }
+.status {
+  width: 98%;
+  display: flex;
+  align-self: center;
+  color: #2ecc71;
+  margin-top: 10px;
+}
 
-    .btn-send {
-      width: 100px;
-      color: #dcdcdc;
-      background-color: #11151b;
-      border: 1px solid #3498db; /* Обводка инпута в цвет фона */
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 20px;
-      transition: border 0.3s;
-      /* Добавляем плавный переход для рамки */
+.disconnected-style {
+  width: 100px;
+  display: flex;
+  font-size: small;
+  align-self: flex-start;
+  margin-top: 10px;
+  color: red;
+}
 
-    }
+.nick {
+  display: flex;
+  font-size: 20px;
+  padding-right: 10px;
+  color: #dcdcdc;
+  font-weight: bold;
+  align-items: end;
+}
 
-    .btn-send:hover {
-      border: 1px solid #a6a6a6;
-      /* Изменяем рамку при наведении курсора */
-    }
-    .chat-block {
-      width: 100%;
-    }
-    #input {
-      width: 100%;
-      padding: 10px;
-      margin-right: 10px;
-      border-radius: 10px;
-      box-sizing: border-box;
-      font-size: 35px;
-      height: 50px;
-      color: #dcdcdc;
-      cursor: pointer;
-      transition: border 0.3s;
-      outline: none;
-      background-color: #11151b; /* Синий цвет для фона инпута */
-      color: #ffffff; /* Белый цвет для текста инпута */
-      border: 1px solid #3498db; /* Обводка инпута в цвет фона */
-    }
-    #input:focus {
-      outline: none; /* Убираем стандартный контур в фокусе */
-      box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); /* Тень при фокусе (цвет синий) */
-    }
-    #input::placeholder {
-      color: #ffffff;
-      opacity: 0.2;
-    }
-    #input:hover {
-      border: 1px solid #a6a6a6;
-      ;
-      /* Изменяем рамку при наведении курсора */
-    }
+.chat-window {
+  display: flex;
+  margin: 20px;
+  align-items: flex-end;
+  /* изменение на flex-end */
+  justify-content: flex-end;
+  flex-direction: column;
+  height: 90vh;
+  max-height: 90vh;
+  border-radius: 20px;
+  padding: 10px;
 
+}
 
-    .status {
-      width: 98%;
-      display: flex;
-      align-self: center;
-      color: #2ecc71;
-      margin-top: 10px;
-    }
+.time-now {
+  margin-left: auto;
+}
+.input-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 10px;
+    border: 1px solid #3498db;
+}
+@keyframes flash {
+  0% {
+    box-shadow: 0 0 10px rgba(216, 205, 255, 0.1);
+  }
 
-    .disconnected-style {
-      width: 100px;
-      display: flex;
-      font-size: small;
-      align-self: flex-start;
-      margin-top: 10px;
-      color: red;
-    }
+  50% {
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.9);
+  }
 
-    .nick {
-      display: flex;
-      font-size: 20px;
-      padding-right: 10px;
-      color: #dcdcdc;
-      font-weight: bold;
-      align-items: end;
-    }
+  100% {
+    box-shadow: 0 0 10px rgba(216, 205, 255, 0.1);
+  }
+}
 
-    .chat-window {
-      display: flex;
-      margin: 20px;
-      align-items: flex-end;
-      /* изменение на flex-end */
-      justify-content: flex-end;
-      flex-direction: column;
-      height: 90vh;
-      max-height: 90vh;
-      border-radius: 20px;
-      padding: 10px;
+.flash {
+  animation: flash 1s;
+}
 
-    }
-    .time-now {
-      margin-left: auto;
-    }
+#messages {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 5px;
+  align-items: flex-end;
+}
 
-    @keyframes flash {
-      0% {
-        box-shadow: 0 0 10px rgba(216, 205, 255, 0.1);
-      }
+#messages::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 3px;
+}
 
-      50% {
-        box-shadow: 0 0 20px rgba(52, 152, 219, 0.9);
-      }
+#messages::-webkit-scrollbar-thumb {
+  background-color: rgb(2, 120, 120);
+  /* цвет ползунка скроллбара */
+  border-radius: 3px;
+  /* закругленные углы ползунка */
+}
 
-      100% {
-        box-shadow: 0 0 10px rgba(216, 205, 255, 0.1);
-      }
-    }
+#messages::-webkit-scrollbar-track {
+  background-color: #000000;
+  /* цвет трека (основной части) скроллбара */
+}
 
-    .flash {
-      animation: flash 1s;
-    }
+.message {
+  display: flex;
+  width: fit-content;
+  height: 100%;
+  align-self: flex-end;
+}
 
-    #messages {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      overflow-y: auto;
-      padding-right: 5px;
-      align-items: flex-end;
-    }
+.block-message-other {
+  display: flex;
+  margin: 5px;
+  font-size: 25px;
+  padding: 10px;
+  background-color: #7b5a74;
+  border-radius: 10px;
+  justify-content: flex-start;
+  align-self: flex-start;
+}
 
-    #messages::-webkit-scrollbar {
-      width: 5px;
-      border-radius: 3px;
-    }
+.block-message-server {
+  display: flex;
+  margin: 5px;
+  max-width: 80%;
+  font-size: 25px;
+  background-color: #1e9f55 !important;
+  padding: 10px;
+  border-radius: 10px;
+  color: #11151b
+}
 
-    #messages::-webkit-scrollbar-thumb {
-      background-color: rgb(2, 120, 120);
-      /* цвет ползунка скроллбара */
-      border-radius: 3px;
-      /* закругленные углы ползунка */
-    }
+.message-time {
+  display: flex;
+  font-size: 12px;
+  padding-left: 10px;
+  align-items: end;
+}
 
-    #messages::-webkit-scrollbar-track {
-      background-color: #000000;
-      /* цвет трека (основной части) скроллбара */
-    }
+.block-message {
+  display: flex;
+  margin: 5px;
+  align-self: flex-end;
+  padding: 10px;
+  font-size: 25px;
+  background-color: #3498db;
+  border-radius: 10px;
+  max-width: 700px;
+  word-wrap: break-word;
+  overflow: auto;
+}
 
-    .message {
-      display: flex;
-      width: fit-content;
-      height: 100%;
-      align-self: flex-end;
-    }
+.block-message-private {
+  display: flex;
+  margin: 5px;
+  max-width: 90%;
+  padding: 10px;
+  font-size: 25px;
+  border: 1px solid #69696a;
+  border-radius: 10px;
+  color: rgb(164, 18, 162)
+    /* Другие стили по вашему усмотрению */
+}
 
-    .block-message-other {
-      display: flex;
-      margin: 5px;
-      font-size: 25px;
-      padding: 10px;
-      background-color: #7b5a74;
-      border-radius: 10px;
-      justify-content: flex-start;
-      align-self: flex-start;
-    }
+.uploaded-image-container {
+  display: flex;
+  margin-top: 10px;
+  justify-content: end;
+}
+.image {
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  border: 1px solid #69696a;
+  object-fit: cover;
+}
 
-    .block-message-server {
-      display: flex;
-      margin: 5px;
-      max-width: 80%;
-      font-size: 25px;
-      background-color: #1e9f55 !important;
-      padding: 10px;
-      border-radius: 10px;
-      color: #11151b
-    }
+.custom-file-upload {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-position: center center;
+  background-size: cover;
+  opacity: 0.8;
+  background-image: url('../public/upload.png');
+  margin-right: 10px;
+  cursor: pointer;
+  filter: invert(60%);
+  transition: background-color 0.3s ease;
+}
 
-    .message-time {
-      display: flex;
-      font-size: 12px;
-      padding-left: 10px;
-      align-items: end;
-    }
+.custom-file-upload:hover {
+  opacity: 1;
 
-    .block-message {
-      display: flex;
-      margin: 5px;
-      align-self: flex-end;
-      padding: 10px;
-      font-size: 25px;
-      background-color: #3498db;
-      border-radius: 10px;
-      max-width: 700px;
-      word-wrap: break-word;
-      overflow: auto;
-    }
+}
 
-    .block-message-private {
-      display: flex;
-      margin: 5px;
-      max-width: 90%;
-      padding: 10px;
-      font-size: 25px;
-      border: 1px solid #69696a;
-      border-radius: 10px;
-      color: rgb(164, 18, 162)
-        /* Другие стили по вашему усмотрению */
-    }
-    .uploaded-image-container {
-      margin-top: 10px; /* или другой подходящий отступ */
-    }
-    
-    .uploaded-image {
-      width: 300px;
-      height: 200px;
-      border-radius: 10px;
-      border: 1px solid #69696a;
-      object-fit: cover; /* Сохраняет соотношение сторон изображения и заполняет всю доступную область */
+/* Скрыть оригинальный input[type="file"] */
+.custom-file-upload input {
+  display: none;
+}
 
-      
-    }
-    .custom-file-upload {
-      display: flex;
-      width: 50px;
-      background-image: url('../public/6583130.png');
-      border: 1px solid #3498db;
-      border-radius: 10px;
-      margin-right: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    
-    .custom-file-upload:hover {
-      background-color: #2980b9;
-    }
-    
-    /* Скрыть оригинальный input[type="file"] */
-    .custom-file-upload input {
-      display: none;
-    }
-    
-    @media screen and (max-width: 1024px) {
-      .App-header {
-        min-height: 100vh;
-        padding: 10px; /* Пространство вокруг элементов для лучшей читаемости */
-      }
-    
-      .nickName {
-        width: 95%;
-        padding: 20px;
-        height: auto;
+@media screen and (max-width: 1024px) {
+  .App-header {
+    min-height: 100vh;
+    padding: 10px;
+    /* Пространство вокруг элементов для лучшей читаемости */
+  }
+ .input-container {
+  border: none;
 
- }
-    
-      .btn-nick {
-        width: 90%;
-        height: 100px;
-        margin-top: 30px;
-        font-size: 40px;
-        background-color: #11151b;
-        border-radius: 10px;
-        align-items: center;
-        align-self: center;
-        font-weight: bold;
-      }
-    
-      #inputNick {
-        width: 100%;
-        height: 70px;
-        font-size: 50px;
-        border-radius: 10px;
-        padding-left: 10px;
-      }
-      #input {
-        border-radius: 10px;
-      }
-      .title-input {
-        font-size: 30px;
-      }
-      .registration-status {
-        color: #2ecc71;
-        font-size: 20px;
-      }
-      .status {
-        font-size: 30px;
-      }
-    #inputNick::placeholder {
-      display: none;
-    }
-      .form-message {
-        flex-direction: column; /* Изменяем направление для сообщений */
-        margin: 10px 0;
-      }
-    
-      .btn-send {
-        width: 100%;
-        height: 100px;
-        margin-top: 10px;
-        font-size: 40px;
-        border-radius: 10px;
-        font-weight: bold;
-        color: rgb(219, 253, 253);
-      }
-    
-      #input {
-        width: 100%;
-        margin: 10px 0;
-        height: 100px;
-        font-size: 70px;
-      }
-    
-      .chat-window {
-        width: 97%;
-        margin: 10px 0;
-        justify-content: space-between;
-      }
-    .chat-block {
-      overflow-y: scroll;
-    }
-      #messages {
-        
-      }
-    
-      .message {
-        margin: 10px 0;
-      }
-      .message-time {
-        font-size: 26px;
-      }
-      .block-message-other,
-      .block-message-server,
-      .block-message,
-      .block-message-private {
-      }
-      .nick {
-        font-size: 40px;
+ } 
+  .nickName {
+    width: 95%;
+    padding: 20px;
+    height: auto;
 
-      }
-      .message {
-        margin: 0;
-        font-size: 40px;
+  }
 
-      }
-      .form-message {
-        align-self: center;
-        margin-bottom: 25px;
-      }
+  .btn-nick {
+    width: 90%;
+    height: 100px;
+    margin-top: 30px;
+    font-size: 40px;
+    background-color: #11151b;
+    border-radius: 10px;
+    align-items: center;
+    align-self: center;
+    font-weight: bold;
+  }
 
-    }
+  #inputNick {
+    width: 100%;
+    height: 70px;
+    font-size: 50px;
+    border-radius: 10px;
+    padding-left: 10px;
+  }
+
+  .title-input {
+    font-size: 30px;
+  }
+
+  .registration-status {
+    color: #2ecc71;
+    font-size: 20px;
+  }
+
+  .status {
+    font-size: 30px;
+  }
+
+  #inputNick::placeholder {
+    display: none;
+  }
+
+  .form-message {
+    flex-direction: column;
+    /* Изменяем направление для сообщений */
+    margin: 10px 0;
+  }
+
+  .btn-send {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    font-size: 40px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: rgb(219, 253, 253);
+  }
+
+  #input {
+    width: 100%;
+    margin: 10px 0;
+    height: 100px;
+    font-size: 70px;
+  }
+
+  .chat-window {
+    width: 97%;
+    margin: 10px 0;
+    justify-content: space-between;
+  }
+
+  .chat-block {
+    overflow-y: scroll;
+  }
+
+  #messages {}
+
+  .message {
+    margin: 10px 0;
+  }
+
+  .message-time {
+    font-size: 26px;
+  }
+
+  .block-message-other,
+  .block-message-server,
+  .block-message,
+  .block-message-private {}
+
+  .nick {
+    font-size: 40px;
+
+  }
+
+  .message {
+    margin: 0;
+    font-size: 40px;
+
+  }
+
+  .form-message {
+    align-self: center;
+    margin-bottom: 25px;
+  }
+  .custom-file-upload {
+    width: 70px;
+    height: 70px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+  }
+  .image {
+    width: 400px;
+    height: 300px;
+  }
+}

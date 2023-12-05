@@ -1,25 +1,27 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs/promises");
+const { v4: uuidv4 } = require('uuid');
 const dotenv = require("dotenv");
 dotenv.config();
+
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET_NAME } = process.env;
 if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_BUCKET_NAME) {
   console.error('Missing required AWS environment variables.');
   process.exit(1);
 }
+
 const s3Client = new S3Client({
   region: 'eu-central-1',
   credentials: {
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
   }
- // Передаем учетные данные из файла конфигурации AWS CLI
 });
-const { v4: uuidv4 } = require('uuid');
-const handleUpload = async (req, res) => {
+
+const handleUpload = async (file) => {
   try {
     // Прочитайте файл изображения
-    const fileContent = await fs.readFile(req.file.path);
+    const fileContent = await fs.readFile(file.path);
     // Генерируйте уникальный ключ с использованием uuid
     const uniqueKey = `${uuidv4()}.jpg`;
     // Определите параметры загрузки
@@ -39,12 +41,12 @@ const handleUpload = async (req, res) => {
     const key = uniqueKey;
     const imageUrl = `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
     // Удалите временный файл после загрузки
-    await fs.unlink(req.file.path);
-    // Верните URL загруженного изображения в ответе
-    res.status(200).json({ success: true, imageUrl });
+    await fs.unlink(file.path);
+    // Верните URL загруженного изображения
+    return imageUrl;
   } catch (error) {
     console.error('Error handling image upload:', error);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
+    throw error;
   }
 };
 
