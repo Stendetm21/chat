@@ -271,12 +271,21 @@ function App() {
             "block-message-private",
             parsedResponse.nickname
           );
-        } else if (messageType === "imageUploaded") {
+        } else if (messageType === "imageUploaded" && inpuNickRef.current.value !== parsedResponse.nickname) {
+          console.log('qqqq', parsedResponse.nickname)
           handleImageMessage({
             imageUrl: parsedResponse.imageUrl,
             nickname: parsedResponse.nickname,
             time: parsedResponse.time,
-          });
+          },);
+        }
+        else if (messageType === "imageUploaded" && inpuNickRef.current.value === parsedResponse.nickname) {
+          console.log('qqqq', parsedResponse.nickname)
+          handleImageMessage({
+            imageUrl: parsedResponse.imageUrl,
+            nickname: parsedResponse.nickname,
+            time: parsedResponse.time,
+          }, true);
         }
         if (parsedResponse.type === "getOnlineUsers") {
           setOnlineUsers(parsedResponse.online);
@@ -285,7 +294,7 @@ function App() {
         console.error("Ошибка при разборе JSON:", error);
       }
     };
-    const handleImageMessage = (message) => {
+    const handleImageMessage = (message, className) => {
       const { imageUrl, nickname, time } = message;
     
       // Создаем элемент img и устанавливаем атрибут src
@@ -295,13 +304,30 @@ function App() {
     
       // Создаем div и вставляем в него элемент img
       const imageContainer = document.createElement("div");
-      imageContainer.classList.add("uploaded-image-container");
+      if (className === undefined) {
+        imageContainer.classList.add("uploaded-image-container-other");
+      } else {
+        imageContainer.classList.add("uploaded-image-container");
+      }
       imageContainer.appendChild(imageElement);
     
-      // Добавляем никнейм и время
+      // Создаем div для информации (никнейм и время)
       const infoDiv = document.createElement("div");
       infoDiv.classList.add("image-info");
-      infoDiv.textContent = `${nickname} - ${time}`;
+    
+      // Добавляем никнейм
+      const nicknameDiv = document.createElement("div");
+      nicknameDiv.classList.add("image-nickname");
+      nicknameDiv.textContent = nickname;
+      infoDiv.appendChild(nicknameDiv);
+    
+      // Добавляем время
+      const timeDiv = document.createElement("div");
+      timeDiv.classList.add("image-time");
+      timeDiv.textContent = time;
+      infoDiv.appendChild(timeDiv);
+    
+      // Добавляем div с информацией в контейнер изображения
       imageContainer.appendChild(infoDiv);
     
       messagesRef.current.appendChild(imageContainer);

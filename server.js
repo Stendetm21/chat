@@ -45,7 +45,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
       type: 'imageUploaded',
       imageUrl: imageUrl,
       nickname: nickname, // Добавляем nickname в сообщение
-      time: new Date().toLocaleTimeString(), // Добавляем время
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
     });
 
     // Возвращение URL загруженного изображения в ответе
