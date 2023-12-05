@@ -398,6 +398,7 @@ function App() {
                 id="input"
                 ref={inputRef}
                 placeholder="Enter message..."
+                autoComplete="off"
                 value={messageInputs[clientId] || ""}
                 onChange={(e) =>
                   setMessageInputs((prevInputs) => ({
