@@ -298,10 +298,8 @@ function App() {
       infoDiv.textContent = `${nickname} - ${time}`;
       imageContainer.appendChild(infoDiv);
   
-      // Добавляем созданный контейнер в messagesRef
       messagesRef.current.appendChild(imageContainer);
   
-      // Прокручиваем вниз
       messagesRef.current.scrollTo({
           top: messagesRef.current.scrollHeight,
           behavior: "smooth",
