@@ -31,13 +31,14 @@ function App() {
   const [currentTime, setCurrentTime] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const handleImageUpload = async (event) => {
+  const handleImageUpload = async (event, nickname) => {
     event.preventDefault();
-
+  
     if (event.target.files && event.target.files.length > 0) {
       const formData = new FormData();
       formData.append("image", event.target.files[0]);
-
+      formData.append("nickname", nickname); // Добавляем nickname в FormData
+  
       try {
         const response = await axios.post(
           "http://13.53.182.168:5023/upload",
@@ -48,7 +49,7 @@ function App() {
             },
           }
         );
-
+  
         if (response.data.success) {
           console.log(
             "Image uploaded successfully. Image URL:",
@@ -66,6 +67,7 @@ function App() {
       console.error("No files selected.");
     }
   };
+  
 
   const handleSaveNickname = async () => {
     const nickname = inpuNickRef.current.value.trim();
@@ -270,7 +272,11 @@ function App() {
             parsedResponse.nickname
           );
         } else if (messageType === "imageUploaded") {
-          handleImageMessage(parsedResponse);
+          handleImageMessage({
+            imageUrl: parsedResponse.imageUrl,
+            nickname: parsedResponse.nickname,
+            time: parsedResponse.time,
+          });
         }
         if (parsedResponse.type === "getOnlineUsers") {
           setOnlineUsers(parsedResponse.online);
@@ -281,30 +287,31 @@ function App() {
     };
     const handleImageMessage = (message) => {
       const { imageUrl, nickname, time } = message;
-  
+    
       // Создаем элемент img и устанавливаем атрибут src
       const imageElement = document.createElement("img");
       imageElement.classList.add("image");
       imageElement.src = imageUrl;
-  
+    
       // Создаем div и вставляем в него элемент img
       const imageContainer = document.createElement("div");
       imageContainer.classList.add("uploaded-image-container");
       imageContainer.appendChild(imageElement);
-  
+    
       // Добавляем никнейм и время
       const infoDiv = document.createElement("div");
       infoDiv.classList.add("image-info");
       infoDiv.textContent = `${nickname} - ${time}`;
       imageContainer.appendChild(infoDiv);
-  
+    
       messagesRef.current.appendChild(imageContainer);
-  
+    
       messagesRef.current.scrollTo({
-          top: messagesRef.current.scrollHeight,
-          behavior: "smooth",
+        top: messagesRef.current.scrollHeight,
+        behavior: "smooth",
       });
-  };
+    };
+    
   
     ws.onopen = handleOpen;
     ws.onclose = handleClose;
@@ -380,7 +387,8 @@ function App() {
                   id="imageInput"
                   name="image"
                   accept="image/*"
-                  onChange={handleImageUpload}
+                  onChange={(event) => handleImageUpload(event, nickname)} // Проверьте, как значение nickname передается сюда
+
                 />
               </label>
             </div>

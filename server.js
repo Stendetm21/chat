@@ -35,12 +35,17 @@ app.use((req, res, next) => {
 
 app.post('/upload', upload.single('image'), async (req, res) => {
   try {
-    const imageUrl = await handleUpload(req.file);
+    console.log('req',req.body)
+    const { nickname } = req.body; // Получаем nickname из запроса
+    const imageUrl = await handleUpload(req.file, nickname); // Передаем nickname в handleUpload
     updateOnlineUsers();
+    
     // Отправка сообщения всем подключенным клиентам через WebSocket
     broadcast({
       type: 'imageUploaded',
       imageUrl: imageUrl,
+      nickname: nickname, // Добавляем nickname в сообщение
+      time: new Date().toLocaleTimeString(), // Добавляем время
     });
 
     // Возвращение URL загруженного изображения в ответе
@@ -50,6 +55,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
 
 function generateClientId() {
   return Math.random().toString(36).substr(2, 9);

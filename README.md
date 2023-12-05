@@ -42,3 +42,4 @@ npm start
 Open your browser and visit http://localhost:3000.
 
 Enter a nickname, password, and start chatting!
+ scp -i ~/Downloads/chat-key.pem -r ./src/App.js   ubuntu@13.53.182.168:/home/ubuntu/chat/src
