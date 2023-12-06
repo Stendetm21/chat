@@ -16,6 +16,7 @@ function App() {
   counter += 1;
   const statusRef = useRef(null);
   const messagesRef = useRef(null);
+  const chatblockRef =useRef(null);
   const inpuNickRef = useRef(null);
   const inputRef = useRef(null);
   const onlineRef = useRef(null);
@@ -78,8 +79,8 @@ function App() {
 
       blockMessageDiv.classList.add(className); // Добавляем класс к blockMessageDiv
       messagesRef.current.appendChild(blockMessageDiv);
-      messagesRef.current.scrollTo({
-        top: messagesRef.current.scrollHeight,
+      chatblockRef.current.scrollTo({
+        top: chatblockRef.current.scrollHeight,
         behavior: "smooth",
       });
 
@@ -224,13 +225,11 @@ function App() {
     };
     const handleImageMessage = (message, className) => {
       const { imageUrl, nickname, time } = message;
-    
-      // Создаем элемент img и устанавливаем атрибут src
+      
       const imageElement = document.createElement("img");
       imageElement.classList.add("image");
       imageElement.src = imageUrl;
-    
-      // Создаем div и вставляем в него элемент img
+
       const imageContainer = document.createElement("div");
       if (className === undefined) {
         imageContainer.classList.add("uploaded-image-container-other");
@@ -239,29 +238,20 @@ function App() {
       }
       imageContainer.appendChild(imageElement);
     
-      // Создаем div для информации (никнейм и время)
       const infoDiv = document.createElement("div");
       infoDiv.classList.add("image-info");
-    
-      // Добавляем никнейм
       const nicknameDiv = document.createElement("div");
       nicknameDiv.classList.add("image-nickname");
       nicknameDiv.textContent = nickname;
       infoDiv.appendChild(nicknameDiv);
-    
-      // Добавляем время
       const timeDiv = document.createElement("div");
       timeDiv.classList.add("image-time");
       timeDiv.textContent = time;
       infoDiv.appendChild(timeDiv);
-    
-      // Добавляем div с информацией в контейнер изображения
       imageContainer.appendChild(infoDiv);
-    
       messagesRef.current.appendChild(imageContainer);
-    
-      messagesRef.current.scrollTo({
-        top: messagesRef.current.scrollHeight,
+      chatblockRef.current.scrollTo({
+        top: chatblockRef.current.scrollHeight,
         behavior: "smooth",
       });
     };
@@ -320,7 +310,7 @@ function App() {
           />
           <div className="registration-status">{registrationStatus}</div>
         </div>
-        <div className="chat-block">
+        <div className="chat-block" ref={chatblockRef}>
           <div id="messages" ref={messagesRef}></div>
           <form onSubmit={handleSubmit} className="form-message">
             <div className="input-container">
