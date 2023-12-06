@@ -161,7 +161,7 @@ wss.on("connection", (ws, req) => {
 
 
 
-app.post("/saveNickname", express.json(), async (req, res) => {
+app.post("/registration", express.json(), async (req, res) => {
   try {
     const { nickname, password } = req.body;
     if (!nickname || !password) {

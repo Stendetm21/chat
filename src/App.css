@@ -9,7 +9,7 @@
   color: #dcdcdc;
 }
 
-.nickName {
+.form {
   font-size: 20px;
   color: #dcdcdc;
   gap: 10px;
@@ -160,15 +160,17 @@
 .time-now {
   margin-left: auto;
 }
+
 .input-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    margin-right: 10px;
-    background-color: #3498db;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-right: 10px;
+  background-color: #3498db;
 }
+
 @keyframes flash {
   0% {
     box-shadow: 0 0 10px rgba(216, 205, 255, 0.1);
@@ -283,6 +285,7 @@
   border-radius: 10px;
   margin: 10px;
 }
+
 .uploaded-image-container-other {
   display: flex;
   flex-direction: column;
@@ -291,21 +294,25 @@
   border-radius: 10px;
   margin: 10px;
 }
+
 .image-info {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
 }
+
 .image-time {
   font-size: 14px;
   padding-right: 10px;
 }
+
 .image-nickname {
   font-size: 20px;
   font-weight: bold;
   padding-left: 10px;
 }
+
 .image {
   width: 300px;
   height: 200px;
@@ -344,11 +351,13 @@
     padding: 10px;
     /* Пространство вокруг элементов для лучшей читаемости */
   }
- .input-container {
-  border: none;
 
- } 
-  .nickName {
+  .input-container {
+    border: none;
+
+  }
+
+  .form {
     width: 95%;
     padding: 20px;
     height: auto;
@@ -392,8 +401,7 @@
     display: none;
   }
 
-  .form-message {
-  }
+  .form-message {}
 
   .btn-send {
     height: 100px;
@@ -451,6 +459,7 @@
     align-self: center;
     margin-bottom: 25px;
   }
+
   .custom-file-upload {
     width: 70px;
     height: 70px;
@@ -458,14 +467,17 @@
     margin-right: 20px;
 
   }
+
   .image {
     margin: 10px;
     width: 500px;
     height: 400px;
   }
+
   .image-time {
     font-size: 18px;
   }
+
   .image-nickname {
     font-size: 25px;
   }

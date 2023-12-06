@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./App.css";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import axios from "axios";
+import ImageUploader from "./components/ImageUploader.jsx"; // добавили импорт
+import RegistrationHandler from './components/RegistrationHendler.jsx';
 
 let counter = 0;
 let ws;
@@ -31,79 +32,6 @@ function App() {
   const [currentTime, setCurrentTime] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const handleImageUpload = async (event, nickname) => {
-    event.preventDefault();
-  
-    if (event.target.files && event.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("image", event.target.files[0]);
-      formData.append("nickname", nickname); // Добавляем nickname в FormData
-  
-      try {
-        const response = await axios.post(
-          "http://13.53.182.168:5023/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-  
-        if (response.data.success) {
-          console.log(
-            "Image uploaded successfully. Image URL:",
-            response.data.imageUrl
-          );
-          setUploadedImageUrl(response.data.imageUrl);
-          getOnlineUsers();
-        } else {
-          console.error("Image upload failed:", response.data.error);
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error.message);
-      }
-    } else {
-      console.error("No files selected.");
-    }
-  };
-  
-
-  const handleSaveNickname = async () => {
-    const nickname = inpuNickRef.current.value.trim();
-    const password = inputPasswordRef.current.value.trim();
-
-    if (nickname && password !== "") {
-      try {
-        const response = await axios.post(
-          "http://13.53.182.168:5023/saveNickname",
-          { nickname, password }
-        );
-        if (response.data.success) {
-          if (response.data.loginSuccess) {
-            setRegistrationStatus("Successful login!");
-            setIsLoggedIn(true);
-            hiddenLoginMenu();
-            setNickname(nickname); // Обновляем состояние никнейма
-          } else {
-            setRegistrationStatus("Successful registration!");
-            hiddenLoginMenu();
-            setNickname(nickname); // Обновляем состояние никнейма
-          }
-        } else {
-          setRegistrationStatus(
-            `Ошибка при регистрации или входе: ${response.data.error}`
-          );
-        }
-      } catch (error) {
-        setRegistrationStatus(
-          `Ошибка при регистрации или входе: ${error.message}`
-        );
-      }
-    } else {
-      setRegistrationStatus("Nickname and password cannot be blank");
-    }
-  };
   const hiddenLoginMenu = () => {
     if (inputPasswordRef.current) {
       inputPasswordRef.current.style.display = "none";
@@ -367,7 +295,7 @@ function App() {
         <div className="time-now">{currentTime}</div>
       </div>
       <div className={`chat-window ${isChatFlashing ? "flash" : ""}`}>
-        <div className="nickName">
+        <div className="form">
           <div className="title-input">Your nickname: {nickname}</div>
           <input id="inputNick" ref={inpuNickRef} onKeyDown={handleKeyDown} />
           <div className="title-input" ref={passwordRef}>
@@ -379,15 +307,17 @@ function App() {
             ref={inputPasswordRef}
             onKeyDown={handleKeyDown}
           />
-
-          <button
-            className="btn-nick"
-            type="submit"
-            ref={enterButtonRef}
-            onClick={handleSaveNickname}
-          >
-            Enter
-          </button>
+          <RegistrationHandler
+            inpuNickRef={inpuNickRef}
+            inputPasswordRef={inputPasswordRef}
+            setRegistrationStatus={setRegistrationStatus}
+            setIsLoggedIn={setIsLoggedIn}
+            hiddenLoginMenu={hiddenLoginMenu}
+            setNickname={setNickname}
+            buttonClassName="btn-nick" 
+            buttonType="submit"  
+            buttonRef={enterButtonRef}
+          />
           <div className="registration-status">{registrationStatus}</div>
         </div>
         <div className="chat-block">
@@ -408,16 +338,11 @@ function App() {
                 }
                 onKeyDown={handleKeyDown}
               />
-              <label htmlFor="imageInput" className="custom-file-upload">
-                <input
-                  type="file"
-                  id="imageInput"
-                  name="image"
-                  accept="image/*"
-                  onChange={(event) => handleImageUpload(event, nickname)} // Проверьте, как значение nickname передается сюда
-
-                />
-              </label>
+              <ImageUploader
+                nickname={nickname}
+                setUploadedImageUrl={setUploadedImageUrl}
+                getOnlineUsers={getOnlineUsers}
+              />
             </div>
 
             <button className="btn-send" type="submit">
