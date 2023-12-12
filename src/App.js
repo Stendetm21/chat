@@ -123,6 +123,7 @@ function App() {
         "Cannot send message if nickname or password is empty"
       );
     }
+    setFullSizeImageUrl("");
   };
 
   const handleKeyDown = (event) => {
@@ -256,6 +257,10 @@ function App() {
         top: chatblockRef.current.scrollHeight,
         behavior: "smooth",
       });
+      imageElement.onclick = () => {
+        setFullSizeImageUrl(imageUrl);
+        console.log(fullSizeImageUrl, 'onlick')
+      };
     };
     
   
@@ -342,6 +347,13 @@ function App() {
             </button>
           </form>
         </div>
+      </div>
+      <div>
+        {fullSizeImageUrl && (
+          <div className="full-size-image-overlay" onClick={() => setFullSizeImageUrl("")}>
+            <img src={fullSizeImageUrl} alt="Full Size" />
+          </div>
+        )}
       </div>
     </header>
   );
