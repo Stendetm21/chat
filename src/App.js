@@ -32,6 +32,8 @@ function App() {
   const [nickname, setNickname] = useState(""); // Новое состояние для никнейма
   const [currentTime, setCurrentTime] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [fullSizeImageUrl, setFullSizeImageUrl] = useState("");
+
 
   const hiddenLoginMenu = () => {
     if (inputPasswordRef.current) {
