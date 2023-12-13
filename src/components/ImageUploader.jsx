@@ -1,4 +1,3 @@
-
 import React from "react";
 import axios from "axios";
 
@@ -8,37 +7,43 @@ function ImageUploader({ nickname, setUploadedImageUrl, getOnlineUsers }) {
 
     const nicknameValue = nickname.trim(); // получаем текущий никнейм
 
-    if (event.target.files && event.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("image", event.target.files[0]);
-      formData.append("nickname", nicknameValue); // используем актуальное значение nickname
+    // Проверка, аутентифицирован ли пользователь (имеет действующий никнейм)
+    if (nicknameValue) {
+      if (event.target.files && event.target.files.length > 0) {
+        const formData = new FormData();
+        formData.append("image", event.target.files[0]);
+        formData.append("nickname", nicknameValue); // используем актуальное значение nickname
 
-      try {
-        const response = await axios.post(
-          "http://13.53.182.168:5023/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        if (response.data.success) {
-          console.log(
-            "Image uploaded successfully. Image URL:",
-            response.data.imageUrl
+        try {
+          const response = await axios.post(
+            "http://13.53.182.168:5023/upload",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
           );
-          setUploadedImageUrl(response.data.imageUrl);
-          getOnlineUsers();
-        } else {
-          console.error("Image upload failed:", response.data.error);
+
+          if (response.data.success) {
+            console.log(
+              "Изображение успешно загружено. URL изображения:",
+              response.data.imageUrl
+            );
+            setUploadedImageUrl(response.data.imageUrl);
+            getOnlineUsers();
+          } else {
+            console.error("Не удалось загрузить изображение:", response.data.error);
+          }
+        } catch (error) {
+          console.error("Ошибка при загрузке изображения:", error.message);
         }
-      } catch (error) {
-        console.error("Error uploading image:", error.message);
+      } else {
+        console.error("Файлы не выбраны.");
       }
     } else {
-      console.error("No files selected.");
+      console.error("Пользователь не аутентифицирован. Загрузка изображений не разрешена.");
+      // Обработка попытки несанкционированной загрузки изображения, например, отображение сообщения об ошибке.
     }
   };
 

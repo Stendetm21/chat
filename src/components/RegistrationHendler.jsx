@@ -36,17 +36,20 @@ const RegistrationHandler = ({
           }
         } else {
           setRegistrationStatus(
-            `Error during registration or login: ${response.data.error}`
+            `invalid username or password`
           );
         }
       } catch (error) {
         setRegistrationStatus(
-          `Error during registration or login: ${error.message}`
+          `invalid username or password`
         );
       }
     } else {
       setRegistrationStatus("Nickname and password cannot be blank");
-    }
+    } 
+    setTimeout(() => {
+      setRegistrationStatus("");
+    }, 10000);
   };
 
   return (

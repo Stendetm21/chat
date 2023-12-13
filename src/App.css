@@ -59,10 +59,6 @@
   color: #f3f5ff;
 }
 
-#inputNick:hover {
-  border: 1px solid #8c94a3;
-}
-
 #inputNick:focus {
   outline: none;
   /* Убираем стандартный контур в фокусе */
@@ -365,6 +361,9 @@
   max-height: 100%;
 }
 
+.registration-status {
+  font-size: 14px;
+}
 @media screen and (max-width: 1024px) {
   .App-header {
     background-color: #262636;
@@ -405,10 +404,6 @@
 
   .title-input {
     font-size: 30px;
-  }
-
-  .registration-status {
-    font-size: 24px;
   }
 
   .status {

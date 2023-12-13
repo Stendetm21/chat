@@ -122,6 +122,9 @@ function App() {
       setRegistrationStatus(
         "Cannot send message if nickname or password is empty"
       );
+      setTimeout(() => {
+        setRegistrationStatus("");
+      }, 10000);
     }
     setFullSizeImageUrl("");
   };
