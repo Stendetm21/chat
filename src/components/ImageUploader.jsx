@@ -27,22 +27,22 @@ function ImageUploader({ nickname, setUploadedImageUrl, getOnlineUsers }) {
 
           if (response.data.success) {
             console.log(
-              "Изображение успешно загружено. URL изображения:",
+              "The image has been successfully uploaded. Image URL:",
               response.data.imageUrl
             );
             setUploadedImageUrl(response.data.imageUrl);
             getOnlineUsers();
           } else {
-            console.error("Не удалось загрузить изображение:", response.data.error);
+            console.error("Failed to load the image:", response.data.error);
           }
         } catch (error) {
-          console.error("Ошибка при загрузке изображения:", error.message);
+          console.error("Error when uploading an image:", error.message);
         }
       } else {
-        console.error("Файлы не выбраны.");
+        console.error("No files are selected.");
       }
     } else {
-      console.error("Пользователь не аутентифицирован. Загрузка изображений не разрешена.");
+      console.error("User is not authenticated. Uploading images is not allowed.");
       // Обработка попытки несанкционированной загрузки изображения, например, отображение сообщения об ошибке.
     }
   };
