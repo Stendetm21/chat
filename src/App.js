@@ -97,22 +97,41 @@ function App() {
     const inputValue = inputRef.current.value.trim();
     const inputNickValue = inpuNickRef.current.value.trim();
     const inputPasswordValue = inputPasswordRef.current.value.trim();
-
-    if (isLoggedIn) {
-      // Пользователь залогинен
+  
+    if (inputValue && inputNickValue && inputPasswordValue) {
+      const messageData = {
+        message: inputValue,
+        nickname: inputNickValue,
+        password: inputPasswordValue,
+      };
+  
+      const mentionedUsers = findMentionedUsers(inputValue);
+      if (mentionedUsers.length > 0) {
+        messageData.mentions = mentionedUsers;
+      }
+  
+      ws.send(JSON.stringify(messageData));
+  
+      setMessageInputs((prevInputs) => ({
+        ...prevInputs,
+        [clientId]: "", // Очищаем поле ввода только для текущего клиента
+      }));
+      console.log("clientID", clientId);
+    } else if (nickname) {
+      // Пользователь зарегистрирован и может отправлять сообщения
       if (inputValue) {
         const messageData = {
           message: inputValue,
-          nickname: inputNickValue,
+          nickname: nickname,
         };
-
+  
         const mentionedUsers = findMentionedUsers(inputValue);
         if (mentionedUsers.length > 0) {
           messageData.mentions = mentionedUsers;
         }
-
+  
         ws.send(JSON.stringify(messageData));
-
+  
         setMessageInputs((prevInputs) => ({
           ...prevInputs,
           [clientId]: "", // Очищаем поле ввода только для текущего клиента
@@ -123,13 +142,13 @@ function App() {
       }
     } else {
       setRegistrationStatus("You need to log in to send messages");
-      setTimeout(() => {
-        setRegistrationStatus("");
-      }, 10000);
     }
-
+    setTimeout(() => {
+      setRegistrationStatus("");
+    }, 10000);
     setFullSizeImageUrl("");
   };
+  
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {

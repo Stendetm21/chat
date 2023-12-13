@@ -28,11 +28,11 @@ const RegistrationHandler = ({
             setRegistrationStatus("Successful login!");
             setIsLoggedIn(true);
             hiddenLoginMenu();
-            setNickname(nickname); // Обновляем состояние никнейма
+            setNickname(nickname);
           } else {
             setRegistrationStatus("Successful registration!");
             hiddenLoginMenu();
-            setNickname(nickname); // Обновляем состояние никнейма
+            setNickname(nickname);
           }
         } else {
           setRegistrationStatus(
