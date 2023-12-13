@@ -1,5 +1,5 @@
-require('dotenv').config(); // Загрузка переменных окружения из файла .env
-const multer = require('multer');
+require("dotenv").config(); // Загрузка переменных окружения из файла .env
+const multer = require("multer");
 
 const express = require("express");
 const http = require("http");
@@ -8,7 +8,7 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const upload = multer({ dest: "uploads/" });
 
-const { handleUpload } = require('./imageHandler');
+const { handleUpload } = require("./imageHandler");
 
 const app = express();
 const server = http.createServer(app);
@@ -33,34 +33,37 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/upload', upload.single('image'), async (req, res) => {
+app.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    console.log('req',req.body)
+    console.log("req", req.body);
     const { nickname } = req.body; // Получаем nickname из запроса
     const imageUrl = await handleUpload(req.file, nickname); // Передаем nickname в handleUpload
     updateOnlineUsers();
-    
+
     // Отправка сообщения всем подключенным клиентам через WebSocket
     broadcast({
-      type: 'imageUploaded',
+      type: "imageUploaded",
       imageUrl: imageUrl,
       nickname: nickname, // Добавляем nickname в сообщение
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }),
     });
 
     // Возвращение URL загруженного изображения в ответе
     res.status(200).json({ success: true, imageUrl });
   } catch (error) {
-    console.error('Error handling upload request:', error);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
+    console.error("Error handling upload request:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
-
 
 function generateClientId() {
   return Math.random().toString(36).substr(2, 9);
 }
-
 
 const broadcast = (message) => {
   wss.clients.forEach((client) => {
@@ -71,7 +74,8 @@ const broadcast = (message) => {
 };
 
 wss.on("connection", (ws, req) => {
-  const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const clientIp =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   console.log("Connection from IP:", clientIp);
 
   ws.clientId = generateClientId();
@@ -96,12 +100,12 @@ wss.on("connection", (ws, req) => {
           if (targetUser) {
             ws.send(
               JSON.stringify({
-                  data: messageText,
-                  origin: nickname, // Отправитель видит свои приватные сообщения
-                  type: "privateMessage",
-                  nickname,
+                data: messageText,
+                origin: nickname, // Отправитель видит свои приватные сообщения
+                type: "privateMessage",
+                nickname,
               })
-          );
+            );
             // Отправляем сообщение только целевому пользователю
             targetUser.ws.send(
               JSON.stringify({
@@ -158,8 +162,6 @@ wss.on("connection", (ws, req) => {
     })
   );
 });
-
-
 
 app.post("/registration", express.json(), async (req, res) => {
   try {

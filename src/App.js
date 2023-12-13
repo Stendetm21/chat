@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./App.css";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import ImageUploader from "./components/ImageUploader.jsx"; // добавили импорт
-import RegistrationHandler from './components/RegistrationHendler.jsx';
+import RegistrationHandler from "./components/RegistrationHendler.jsx";
 
 let counter = 0;
 let ws;
@@ -16,7 +16,7 @@ function App() {
   counter += 1;
   const statusRef = useRef(null);
   const messagesRef = useRef(null);
-  const chatblockRef =useRef(null);
+  const chatblockRef = useRef(null);
   const inpuNickRef = useRef(null);
   const inputRef = useRef(null);
   const onlineRef = useRef(null);
@@ -33,7 +33,6 @@ function App() {
   const [currentTime, setCurrentTime] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [fullSizeImageUrl, setFullSizeImageUrl] = useState("");
-
 
   const hiddenLoginMenu = () => {
     if (inputPasswordRef.current) {
@@ -99,33 +98,36 @@ function App() {
     const inputNickValue = inpuNickRef.current.value.trim();
     const inputPasswordValue = inputPasswordRef.current.value.trim();
 
-    if (inputValue && inputNickValue && inputPasswordValue) {
-      const messageData = {
-        message: inputValue,
-        nickname: inputNickValue,
-        password: inputPasswordValue,
-      };
+    if (isLoggedIn) {
+      // Пользователь залогинен
+      if (inputValue) {
+        const messageData = {
+          message: inputValue,
+          nickname: inputNickValue,
+        };
 
-      const mentionedUsers = findMentionedUsers(inputValue);
-      if (mentionedUsers.length > 0) {
-        messageData.mentions = mentionedUsers;
+        const mentionedUsers = findMentionedUsers(inputValue);
+        if (mentionedUsers.length > 0) {
+          messageData.mentions = mentionedUsers;
+        }
+
+        ws.send(JSON.stringify(messageData));
+
+        setMessageInputs((prevInputs) => ({
+          ...prevInputs,
+          [clientId]: "", // Очищаем поле ввода только для текущего клиента
+        }));
+        console.log("clientID", clientId);
+      } else {
+        setRegistrationStatus("Cannot send empty message");
       }
-
-      ws.send(JSON.stringify(messageData));
-
-      setMessageInputs((prevInputs) => ({
-        ...prevInputs,
-        [clientId]: "", // Очищаем поле ввода только для текущего клиента
-      }));
-      console.log("clientID", clientId);
     } else {
-      setRegistrationStatus(
-        "Cannot send message if nickname or password is empty"
-      );
+      setRegistrationStatus("You need to log in to send messages");
       setTimeout(() => {
         setRegistrationStatus("");
       }, 10000);
     }
+
     setFullSizeImageUrl("");
   };
 
@@ -206,21 +208,29 @@ function App() {
             "block-message-private",
             parsedResponse.nickname
           );
-        } else if (messageType === "imageUploaded" && inpuNickRef.current.value !== parsedResponse.nickname) {
-          console.log('qqqq', parsedResponse.nickname)
+        } else if (
+          messageType === "imageUploaded" &&
+          inpuNickRef.current.value !== parsedResponse.nickname
+        ) {
+          console.log("qqqq", parsedResponse.nickname);
           handleImageMessage({
             imageUrl: parsedResponse.imageUrl,
             nickname: parsedResponse.nickname,
             time: parsedResponse.time,
-          },);
-        }
-        else if (messageType === "imageUploaded" && inpuNickRef.current.value === parsedResponse.nickname) {
-          console.log('qqqq', parsedResponse.nickname)
-          handleImageMessage({
-            imageUrl: parsedResponse.imageUrl,
-            nickname: parsedResponse.nickname,
-            time: parsedResponse.time,
-          }, true);
+          });
+        } else if (
+          messageType === "imageUploaded" &&
+          inpuNickRef.current.value === parsedResponse.nickname
+        ) {
+          console.log("qqqq", parsedResponse.nickname);
+          handleImageMessage(
+            {
+              imageUrl: parsedResponse.imageUrl,
+              nickname: parsedResponse.nickname,
+              time: parsedResponse.time,
+            },
+            true
+          );
         }
         if (parsedResponse.type === "getOnlineUsers") {
           setOnlineUsers(parsedResponse.online);
@@ -231,7 +241,7 @@ function App() {
     };
     const handleImageMessage = (message, className) => {
       const { imageUrl, nickname, time } = message;
-      
+
       const imageElement = document.createElement("img");
       imageElement.classList.add("image");
       imageElement.src = imageUrl;
@@ -243,7 +253,7 @@ function App() {
         imageContainer.classList.add("uploaded-image-container");
       }
       imageContainer.appendChild(imageElement);
-    
+
       const infoDiv = document.createElement("div");
       infoDiv.classList.add("image-info");
       const nicknameDiv = document.createElement("div");
@@ -262,11 +272,10 @@ function App() {
       });
       imageElement.onclick = () => {
         setFullSizeImageUrl(imageUrl);
-        console.log(fullSizeImageUrl, 'onlick')
+        console.log(fullSizeImageUrl, "onlick");
       };
     };
-    
-  
+
     ws.onopen = handleOpen;
     ws.onclose = handleClose;
     ws.onmessage = (response) => {
@@ -314,8 +323,8 @@ function App() {
             setIsLoggedIn={setIsLoggedIn}
             hiddenLoginMenu={hiddenLoginMenu}
             setNickname={setNickname}
-            buttonClassName="btn-nick" 
-            buttonType="submit"  
+            buttonClassName="btn-nick"
+            buttonType="submit"
             buttonRef={enterButtonRef}
           />
           <div className="registration-status">{registrationStatus}</div>
@@ -353,7 +362,10 @@ function App() {
       </div>
       <div>
         {fullSizeImageUrl && (
-          <div className="full-size-image-overlay" onClick={() => setFullSizeImageUrl("")}>
+          <div
+            className="full-size-image-overlay"
+            onClick={() => setFullSizeImageUrl("")}
+          >
             <img src={fullSizeImageUrl} alt="Full Size" />
           </div>
         )}
