@@ -97,21 +97,21 @@ function App() {
     const inputValue = inputRef.current.value.trim();
     const inputNickValue = inpuNickRef.current.value.trim();
     const inputPasswordValue = inputPasswordRef.current.value.trim();
-  
+
     if (inputValue && inputNickValue && inputPasswordValue) {
       const messageData = {
         message: inputValue,
         nickname: inputNickValue,
         password: inputPasswordValue,
       };
-  
+
       const mentionedUsers = findMentionedUsers(inputValue);
       if (mentionedUsers.length > 0) {
         messageData.mentions = mentionedUsers;
       }
-  
+
       ws.send(JSON.stringify(messageData));
-  
+
       setMessageInputs((prevInputs) => ({
         ...prevInputs,
         [clientId]: "", // Очищаем поле ввода только для текущего клиента
@@ -124,17 +124,17 @@ function App() {
           message: inputValue,
           nickname: nickname,
         };
-  
+
         const mentionedUsers = findMentionedUsers(inputValue);
         if (mentionedUsers.length > 0) {
           messageData.mentions = mentionedUsers;
         }
-  
+
         ws.send(JSON.stringify(messageData));
-  
+
         setMessageInputs((prevInputs) => ({
           ...prevInputs,
-          [clientId]: "", // Очищаем поле ввода только для текущего клиента
+          [clientId]: "",
         }));
         console.log("clientID", clientId);
       } else {
@@ -148,7 +148,6 @@ function App() {
     }, 10000);
     setFullSizeImageUrl("");
   };
-  
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -316,7 +315,7 @@ function App() {
   return (
     <header className="App-header">
       <div className="status" id="status" ref={statusRef}>
-        {status}
+        <div className="title-status">{status}</div>
         <div className="online" ref={onlineRef}>
           {onlineUsers}
         </div>
@@ -324,7 +323,9 @@ function App() {
       </div>
       <div className={`chat-window ${isChatFlashing ? "flash" : ""}`}>
         <div className="form">
-          <div className="title-input">Your nickname: {nickname}</div>
+          <div className="title-input">
+            Your nickname: <div className="nick">{nickname}</div>
+          </div>
           <input id="inputNick" ref={inpuNickRef} onKeyDown={handleKeyDown} />
           <div className="title-input" ref={passwordRef}>
             Your password:{" "}

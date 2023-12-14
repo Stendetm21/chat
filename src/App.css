@@ -12,11 +12,10 @@
   font-size: 20px;
   align-self: center;
   color: #f3f3fa;
-  gap: 10px;
   width: 250px;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  gap: 10px;
 }
 
 .btn-nick {
@@ -70,7 +69,8 @@
 }
 .form-message {
   display: flex;
-  flex-direction: row;
+  align-self: flex-end;
+  width: 99%;
   margin-bottom: 20px;
   margin-top: 20px;
 
@@ -138,11 +138,16 @@
 }
 
 .status {
-  width: 98%;
+  width: 100%;
   display: flex;
   align-self: center;
   color: #f3f5ff;
-  margin-top: 10px;
+  padding: 10px;
+  font-size: 20px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,1);
+-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,1);
+box-shadow: 0px 2px 3px 0px rgba(0,0,0,1);
+
 }
 
 .disconnected-style {
@@ -164,19 +169,19 @@
 
 .chat-window {
   display: flex;
-  margin: 20px;
   align-items: flex-end;
   justify-content: space-between;
   flex-direction: column;
   height: 90vh;
   max-height: 90vh;
-  border-radius: 20px;
-  padding: 10px;
-
 }
 
 .time-now {
+  padding-right: 10px;
   margin-left: auto;
+}
+.title-status {
+  padding-left: 10px;
 }
 
 .input-container {
@@ -435,7 +440,6 @@
 
   .chat-window {
     width: 97%;
-    margin: 10px 0;
     justify-content: space-between;
   }
 
